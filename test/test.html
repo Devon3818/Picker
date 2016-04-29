@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+		<title>Mobiscroll</title>
+		<script type="text/javascript" src="js/jquery1.11.js" ></script>
+		<style>
+			* { margin: 0; padding: 0;}
+			html,body { width: 100%; height: 100%; overflow: hidden;}
+			li { list-style: none;}
+			#wrap { overflow: hidden; width: 100%; height: 2rem; background: yellow; position: relative; margin: 6.5rem auto;}
+			#wrap ul { width: 9999rem; height: 2rem; background: yellowgreen; position: absolute; top: 0; left: 0;}
+			#wrap ul li { list-style: none; float: left; width: 2rem; height: 2rem; text-align: center; color: #FFFFFF; line-height: 2rem; font-size: 0.7rem; border: 1px solid #ededed; box-sizing: border-box;}
+		</style>
+	</head>
+
+	<body>
+		<script>
+			var oW = $(window).width();
+			$('html').css('font-size',oW/10);
+		</script>
+		<div id="wrap">
+			
+			<ul id="ul">
+				
+			</ul>
+			
+		</div>
+		<script>
+			var oUl = $('#ul');
+			var max = 100;
+			var html = '';
+			
+			//开始点击坐标
+			var starX = 0;
+			var starX2 = 0;
+			//距离
+			var dur = 0;
+			//结束点
+			var endX = 0;
+			var moveX = 0;
+			
+			var ul_d = 0;
+			var ul_d_l = 0;
+			var left = 0;
+			
+			
+			for (var i=0; i<max; i++) {
+				html+='<li>'+i+'</li>';
+			}
+			oUl.append(html);
+			
+			oUl[0].addEventListener('touchstart',touch,false);
+			oUl[0].addEventListener('touchmove',move,false);
+			oUl[0].addEventListener('touchend',myend,false);
+			
+			
+			function touch(event){
+				oUl.css('transition','');
+				starX = starX2 = event.touches[0].clientX;
+				
+			}
+			
+			
+			function move(event){
+				moveX = event.touches[0].clientX;
+				left = moveX - starX2 + ul_d_l;
+				oUl.css('left',left);
+				ul_d = (moveX - starX)*5;
+				starX = moveX;
+				//console.log(left);
+			}
+			
+			function myend(event){
+				ul_d_l = left+ul_d;
+				oUl.css('transition','all 550ms');
+				oUl.css('left',ul_d_l);
+				console.log(ul_d);
+			}
+			
+		</script>
+	</body>
+
+</<html>
