@@ -17,70 +17,84 @@
 	</head>
 
 	<body>
-		<script>
-			var oW = $(window).width();
-			$('html').css('font-size',oW/10);
-		</script>
-		<div id="wrap">
-			
-			<ul id="ul">
+	<script>
+		var oW = $(window).width();
+		$('html').css('font-size', oW / 10);
+	</script>
+	<div id="wrap">
+
+		<ul id="ul">
+
+		</ul>
+
+	</div>
+	<script>
+		var oUl = $('#ul');
+		var max = 100;
+		var html = '';
+		//开始点击坐标
+		var starX = 0;
+		var starX2 = 0;
+		//距离
+		var dur = 0;
+		//结束点
+		var endX = 0;
+		var moveX = 0;
+		var ul_d = 0;
+		var ul_d_l = 0;
+		var left = 0;
+		
+		var max_x = parseFloat(oUl.css('height')) * max;
+		
+		
+		for (var i = 0; i < max; i++) {
+			html += '<li>' + i + '</li>';
+		}
+		oUl.append(html);
+		oUl[0].addEventListener('touchstart', touch, false);
+		oUl[0].addEventListener('touchmove', move, false);
+		oUl[0].addEventListener('touchend', myend, false);
+
+		function touch(event) {
+			oUl.css('transition', '');
+			starX = starX2 = event.touches[0].clientX;
+		}
+
+		function move(event) {
+			//移动时的坐标
+			moveX = event.touches[0].clientX;
+			//实际ul要移动的距离，ul_d_l为ul之前移动的数值
+			left = moveX - starX2 + ul_d_l;
+			oUl.css('left', left);
+			//移动的缓冲距离
+			ul_d = (moveX - starX);
+			starX = moveX;
+			//console.log(left);
+		}
+
+		function myend(event) {
+			//更新ul移动的距离
+			//oUl.css('transition', 'left 180ms');
+			ul_d_l = left;
+			var i = 1;
+			(function(){
 				
-			</ul>
-			
-		</div>
-		<script>
-			var oUl = $('#ul');
-			var max = 100;
-			var html = '';
-			
-			//开始点击坐标
-			var starX = 0;
-			var starX2 = 0;
-			//距离
-			var dur = 0;
-			//结束点
-			var endX = 0;
-			var moveX = 0;
-			
-			var ul_d = 0;
-			var ul_d_l = 0;
-			var left = 0;
-			
-			
-			for (var i=0; i<max; i++) {
-				html+='<li>'+i+'</li>';
-			}
-			oUl.append(html);
-			
-			oUl[0].addEventListener('touchstart',touch,false);
-			oUl[0].addEventListener('touchmove',move,false);
-			oUl[0].addEventListener('touchend',myend,false);
-			
-			
-			function touch(event){
-				oUl.css('transition','');
-				starX = starX2 = event.touches[0].clientX;
+				(function inertiaMove(){
+					
+					var l = ul_d *= 0.9;
+					if(Math.abs(l)<=1){
+						return true;
+					}
+					ul_d_l+= l;
+					console.log(ul_d *= 0.8);
+					oUl.css('left', ul_d_l);
+					setTimeout(inertiaMove, 13);
+				})();
 				
-			}
-			
-			
-			function move(event){
-				moveX = event.touches[0].clientX;
-				left = moveX - starX2 + ul_d_l;
-				oUl.css('left',left);
-				ul_d = (moveX - starX)*5;
-				starX = moveX;
-				//console.log(left);
-			}
-			
-			function myend(event){
-				ul_d_l = left+ul_d;
-				oUl.css('transition','all 550ms');
-				oUl.css('left',ul_d_l);
-				console.log(ul_d);
-			}
-			
-		</script>
-	</body>
+			})()
+
+		}
+	</script>
+</body>
 
 </<html>
