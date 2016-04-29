@@ -74,6 +74,8 @@
 		}
 
 		function myend(event) {
+			console.log(ul_d);
+			var cheak = ul_d>0?true:false;
 			//更新ul移动的距离
 			oUl.css('transition', 'left 250ms ease-out');
 			ul_d_l = left;
@@ -87,7 +89,7 @@
 						return true;
 					}
 					ul_d_l+= l;
-					console.log(ul_d *= 0.8);
+					//console.log(ul_d *= 0.8);
 					oUl[0].style.transform = 'translateX('+ul_d_l+'px)';
 					setTimeout(inertiaMove, 13);
 				})();
