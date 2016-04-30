@@ -5,99 +5,170 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 		<title>Mobiscroll</title>
-		<script type="text/javascript" src="js/jquery1.11.js" ></script>
+		<script type="text/javascript" src="js/jquery1.11.js"></script>
+		<link rel="stylesheet" href="css/font-icomoon.css" />
 		<style>
-			* { margin: 0; padding: 0;}
-			html,body { width: 100%; height: 100%; overflow: hidden;}
-			li { list-style: none;}
-			#wrap { overflow: hidden; width: 100%; height: 2rem; background: yellow; position: relative; margin: 6.5rem auto;}
-			#wrap ul { width: 9999rem; height: 2rem; background: yellowgreen;}
-			#wrap ul li { list-style: none; float: left; width: 2rem; height: 2rem; text-align: center; color: #FFFFFF; line-height: 2rem; font-size: 0.7rem; border: 1px solid #ededed; box-sizing: border-box;}
+			* {
+				margin: 0;
+				padding: 0;
+				-webkit-user-select: none;  /* Chrome all / Safari all /opera15+*/  
+				-moz-user-select: none;     /* Firefox all */  
+				-ms-user-select: none;      /* IE 10+ */  
+				user-select: none;  
+			}
+			
+			html,
+			body {
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				background: #BDF2FF;
+			}
+			
+			li {
+				list-style: none;
+			}
+			
+			#wrap {
+				overflow: hidden;
+				width: 100%;
+				height: 2rem;
+				background: yellow;
+				position: relative;
+				margin: 6.5rem auto;
+			}
+			
+			#wrap ul {
+				width: 9999rem;
+				height: 2rem;
+				background: yellowgreen;
+			}
+			
+			#wrap ul li {
+				list-style: none;
+				float: left;
+				width: 2rem;
+				height: 2rem;
+				text-align: center;
+				color: #FFFFFF;
+				line-height: 2rem;
+				font-size: 0.7rem;
+				border: 1px solid #ededed;
+				box-sizing: border-box;
+			}
+			
+			#arrow {
+				color: #FFFFFF;
+				font-size: 1rem;
+				text-align: center;
+				line-height: 2rem;
+				width: 2rem;
+				height: 2rem;
+				background: #45BD15;
+				position: fixed;
+				top: 4.5rem;
+				left: 4rem;
+			}
 		</style>
 	</head>
 
 	<body>
-	<script>
-		var oW = $(window).width();
-		$('html').css('font-size', oW / 10);
-	</script>
-	<div id="wrap">
+		<script>
+			var oW = $(window).width();
+			$('html').css('font-size', oW / 10);
+		</script>
 
-		<ul id="ul">
+		<div id="arrow">
+			<i class="imooc-icon">&#xf04f;</i>
+		</div>
 
-		</ul>
+		<div id="wrap">
 
-	</div>
-	<script>
-		var oUl = $('#ul');
-		var max = 200;
-		var html = '';
-		//开始点击坐标
-		var starX = 0;
-		var starX2 = 0;
-		//距离
-		var dur = 0;
-		//结束点
-		var endX = 0;
-		var moveX = 0;
-		var ul_d = 0;
-		var ul_d_l = 0;
-		var left = 0;
-		
-		var max_x = parseFloat(oUl.css('height')) * max;
-		
-		
-		for (var i = 0; i < max; i++) {
-			html += '<li>' + i + '</li>';
-		}
-		oUl.append(html);
-		oUl[0].addEventListener('touchstart', touch, false);
-		oUl[0].addEventListener('touchmove', move, false);
-		oUl[0].addEventListener('touchend', myend, false);
+			<ul id="ul">
 
-		function touch(event) {
-			oUl.css('transition', '');
-			starX = starX2 = event.touches[0].clientX;
-		}
+			</ul>
 
-		function move(event) {
-			//移动时的坐标
-			moveX = event.touches[0].clientX;
-			//实际ul要移动的距离，ul_d_l为ul之前移动的数值
-			left = moveX - starX2 + ul_d_l;
-			oUl[0].style.transform = 'translateX('+left+'px)';
-			//oUl.css('left', left);
-			//移动的缓冲距离
-			ul_d = (moveX - starX);
-			starX = moveX;
-			//console.log(left);
-		}
+		</div>
+		<script>
+			var oUl = $('#ul');
+			var max = 280;
+			var html = '';
+			//开始点击坐标
+			var starX = 0;
+			var starX2 = 0;
+			//距离
+			var dur = 0;
+			//结束点
+			var endX = 0;
+			var moveX = 0;
+			var ul_d = 0;
+			var ul_d_l = 0;
+			var left = 0;
+			var max_x = parseFloat(oUl.css('height')) * max;
+			//li的宽度
+			var oLi_W = oUl.height();
+			//alert(oLi_W);
+			for (var i = 0; i < max; i++) {
+				html += '<li>' + i + '</li>';
+			}
+			oUl.append(html);
+			oUl[0].addEventListener('touchstart', touch, false);
+			oUl[0].addEventListener('touchmove', move, false);
+			oUl[0].addEventListener('touchend', myend, false);
 
-		function myend(event) {
-			console.log(ul_d);
-			var cheak = ul_d>0?true:false;
-			//更新ul移动的距离
-			oUl.css('transition', 'left 250ms ease-out');
-			ul_d_l = left;
-			var i = 1;
-			(function(){
-				
-				(function inertiaMove(){
-					
-					var l = ul_d *= 0.98;
-					if(Math.abs(l)<=1){
-						return true;
-					}
-					ul_d_l+= l;
-					//console.log(ul_d *= 0.8);
-					oUl[0].style.transform = 'translateX('+ul_d_l+'px)';
-					setTimeout(inertiaMove, 13);
-				})();
-				
-			})()
+			function touch(event) {
+				oUl.css('transition', '');
+				starX = starX2 = event.touches[0].clientX;
+			}
 
-		}
-	</script>
-</body>
+			function move(event) {
+				//移动时的坐标
+				moveX = event.touches[0].clientX;
+				//实际ul要移动的距离，ul_d_l为ul之前移动的数值
+				left = moveX - starX2 + ul_d_l;
+				if(left >=0){
+					left = 0;
+					return true;
+				}
+				oUl[0].style.transform = 'translateX(' + left + 'px)';
+				//oUl.css('left', left);
+				//移动的缓冲距离
+				ul_d = (moveX - starX);
+				starX = moveX;
+				//console.log(left);
+			}
 
-</<html>
+			function myend(event) {
+				console.log(ul_d);
+				var cheak = ul_d > 0 ? true : false;
+				//更新ul移动的距离
+				oUl.css('transition', 'all 150ms ease-out');
+				ul_d_l = left;
+				var i = 1;
+				(function() {
+					(function inertiaMove() {
+						var l = ul_d *= 0.94;
+						
+						if (Math.abs(l) <= 1) {
+							//alert(Math.abs(ul_d_l/oLi_W));
+							var index = Math.round(Math.abs(ul_d_l / oLi_W));
+							//alert(index);
+							oUl.css('transition', 'all 150ms ease-out');
+							oUl[0].style.transform = 'translateX(' + -index * oLi_W + 'px)';
+							return true;
+						}
+						if(ul_d_l>=0){
+							oUl[0].style.transform = 'translateX(' + 0 + 'px)';
+							return true;
+						}
+						ul_d_l += l;
+						//console.log(ul_d *= 0.8);
+						oUl[0].style.transform = 'translateX(' + ul_d_l + 'px)';
+						setTimeout(inertiaMove, 13);
+					})();
+				})()
+			}
+		</script>
+	</body>
+
+	</<html>
