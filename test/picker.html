@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
-		<title>Mobiscroll</title>
+		<meta charset="UTF-8">
+		<title></title>
 		<script type="text/javascript" src="js/jquery1.11.js"></script>
-		<link rel="stylesheet" href="css/font-icomoon.css" />
 		<style>
 			* {
 				margin: 0;
@@ -20,97 +18,123 @@
 				user-select: none;
 			}
 			
-			html,
-			body {
-				width: 100%;
-				height: 100%;
-				overflow: hidden;
-				background: #BDF2FF;
-			}
-			
 			li {
 				list-style: none;
 			}
 			
-			#wrap,
-			#wrap2 {
-				overflow: hidden;
+			body,
+			html {
+				font-family: arial;
+				padding-top: 3rem;
 				width: 100%;
-				height: 2rem;
-				background: yellow;
+				height: 100%;
+				overflow: hidden;
+				background: rgba(0, 0, 0, 0.3);
+			}
+			
+			#picker {
 				position: relative;
-				margin: 0 auto 0;
-			}
-			
-			#wrap ul,
-			#wrap2 ul {
-				width: 9999rem;
-				height: 2rem;
-				background: yellowgreen;
-			}
-			
-			#wrap ul li,
-			#wrap2 ul li {
-				list-style: none;
-				float: left;
-				width: 2rem;
-				height: 2rem;
-				text-align: center;
-				color: #FFFFFF;
-				line-height: 2rem;
-				font-size: 0.7rem;
-				border: 1px solid #ededed;
-				box-sizing: border-box;
-			}
-			
-			#arrow {
-				color: #FFFFFF;
-				font-size: 1rem;
-				text-align: center;
-				line-height: 2rem;
-				width: 2rem;
-				height: 2rem;
-				background: #45BD15;
+				width: 8rem;
+				height: 10rem;
+				background: #FFFFFF;
 				margin: 0 auto;
 			}
 			
-			#now { width: 100%; display: block; height: 6rem; text-align: center; line-height: 6rem; font-size: 5rem; color: #FFFFFF;}
+			#picker h3 {
+				font-weight: normal;
+				box-sizing: border-box;
+				color: #3db5e3;
+				font-size: 0.7rem;
+				text-align: center;
+				display: block;
+				line-height: 1.7rem;
+				border-bottom: 0.05rem solid #3db5e3;
+			}
+			
+			#picker h6 {
+				font-weight: normal;
+				box-sizing: border-box;
+				position: absolute;
+				bottom: 0;
+				left: 0;
+				width: 100%;
+				height: 1.3rem;
+				font-size: 0.55rem;
+				text-align: center;
+				line-height: 1.3rem;
+				border-top: 0.05rem solid #e4e5e5;
+				color: #A2A2A2;
+			}
+			
+			.wrap {
+				position: relative;
+				width: 100%;
+				height: 7rem;
+				overflow: hidden;
+			}
+			
+			.wrap ul {
+				width: 100%;
+				overflow: hidden;
+			}
+			
+			.wrap li {
+				color: #c7c7c7;
+				width: 100%;
+				height: 1.4rem;
+				line-height: 1.4rem;
+				text-align: center;
+				font-size: 0.5rem;
+			}
+			
+			.wrap span {
+				position: absolute;
+				width: 70%;
+				height: 0.04rem;
+				background: #b2dded;
+				left: 15%;
+			}
+			
+			.bar_top {
+				top: 2.8rem;
+			}
+			
+			.bar_bot {
+				top: 4.2rem;
+			}
 		</style>
 	</head>
 
 	<body>
 		<script>
-			var oW = $(window).width();
-			$('html').css('font-size', oW / 10);
+			var oW = $(window).width() / 10;
+			$('html').css('font-size', oW);
 		</script>
 
-		<div id="arrow">
-			<i class="imooc-icon">&#xf04f;</i>
+		<!--Picker-->
+		<div id="picker">
+			<h3>PickerView</h3>
+
+			<!--wrap-->
+			<div class="wrap">
+
+				<ul id="ul">
+
+					<!--<li>Venus</li>
+					<li>Earth</li>
+					<li>Mars</li>
+					<li>Jupiter</li>
+					<li>Uranus</li>-->
+
+				</ul>
+
+				<span class="bar_top"></span>
+				<span class="bar_bot"></span>
+			</div>
+
+			<!--click-->
+			<h6>OK</h6>
 		</div>
-
-		<div id="wrap">
-
-			<ul id="ul">
-
-			</ul>
-
-		</div>
-
-		<div id="wrap2">
-
-			<ul id="ul2">
-
-			</ul>
-
-		</div>
-		
-		
-		<!--当前值-->
-		<h4 id="now">
-			
-			0
-			
-		</h4>
 
 		<script>
 			//Picker选择器对象
@@ -119,9 +143,16 @@
 				this.init(obj);
 			}
 			Picker.prototype.init = function(obj) {
-				obj.max = 50;
-				
+				obj.max = 180;
 				obj.html = '';
+				for (var i = 0; i < obj.max; i++) {
+					if (i <= 9) {
+						obj.html += '<li>0' + i + '</li>';
+					} else {
+						obj.html += '<li>' + i + '</li>';
+					}
+				}
+				obj.innerHTML = obj.html;
 				//开始点击坐标
 				obj.starX = 0;
 				obj.starX2 = 0;
@@ -133,15 +164,11 @@
 				obj.ul_d = 0;
 				obj.ul_d_l = 0;
 				obj.left = 0;
-				obj.max_x = parseFloat(window.getComputedStyle(obj, null).height) * obj.max;
+				obj.max_x = $('#ul li').height() * obj.max;
 				//li的宽度
-				obj.oLi_W = parseFloat(window.getComputedStyle(obj, null).height);
+				obj.oLi_W = $('#ul li').height();
 				obj.MAX_INTEGER = obj.oLi_W * 5;
-				//alert(oLi_W);
-				for (var i = 0; i < obj.max; i++) {
-					obj.html += '<li>' + i + '</li>';
-				}
-				obj.innerHTML = obj.html;
+				$('#ul li').css('height', obj.oLi_W);
 				obj.addEventListener('touchstart', this.touch, false);
 				obj.addEventListener('touchmove', this.move, false);
 				obj.addEventListener('touchend', this.myend, false);
@@ -149,22 +176,25 @@
 			}
 			Picker.prototype.touch = function() {
 				this.style.transition = '';
-				this.starX = this.starX2 = event.touches[0].clientX;
+				this.starX = this.starX2 = event.touches[0].clientY;
+				//console.log(this.starX);
 			}
 			Picker.prototype.move = function() {
+				//console.log(444)
 				//移动时的坐标
-				this.moveX = event.touches[0].clientX;
+				this.moveX = event.touches[0].clientY;
+				//console.log(event.touches[0].clientY);
 				//实际ul要移动的距离，ul_d_l为ul之前移动的数值
 				this.left = this.moveX - this.starX2 + this.ul_d_l;
 				if (this.left >= 0) {
 					this.left = 0;
 					return true;
 				}
-				if(this.left <= -this.max_x + this.MAX_INTEGER ){
+				if (this.left <= -this.max_x + this.MAX_INTEGER) {
 					this.left = -this.max_x + this.MAX_INTEGER;
 					return true;
 				}
-				this.style.transform = 'translateX(' + this.left + 'px)';
+				this.style.transform = 'translateY(' + this.left + 'px)';
 				//oUl.css('left', left);
 				//移动的缓冲距离
 				this.ul_d = (this.moveX - this.starX);
@@ -181,42 +211,37 @@
 					var i = 1;
 					(function() {
 						(function inertiaMove() {
-							var l = Ele.ul_d *= 0.94;
+							var l = Ele.ul_d *= 0.9;
 							var index = Math.round(Math.abs(Ele.ul_d_l / Ele.oLi_W));
 							if (Math.abs(l) <= 1) {
 								//alert(Math.abs(ul_d_l/oLi_W));
-								
 								//alert(index);
 								Ele.style.transition = "all 150ms ease-out";
-								Ele.style.transform = 'translateX(' + -index * Ele.oLi_W + 'px)';
+								Ele.style.transform = 'translateY(' + -index * Ele.oLi_W + 'px)';
+								//Ele.style.transition = '';
 								//console.log(index+2);
-								Now.innerHTML = index+2
 								return true;
 							}
 							if (Ele.ul_d_l >= 0) {
-								Ele.style.transform = 'translateX(' + 0 + 'px)';
+								Ele.style.transform = 'translateY(' + 0 + 'px)';
 								//console.log(index+2);
-								Now.innerHTML = index+2
 								return true;
 							}
 							if (Ele.ul_d_l <= -Ele.max_x + Ele.MAX_INTEGER) {
-								
-								Ele.style.transform = 'translateX(' + (-Ele.max_x + Ele.MAX_INTEGER) + 'px)';
+								Ele.style.transform = 'translateY(' + (-Ele.max_x + Ele.MAX_INTEGER) + 'px)';
 								//console.log(index+2);
-								Now.innerHTML = index+2
 								return true;
 							}
 							Ele.ul_d_l += l;
 							//console.log(ul_d *= 0.8);
-							Ele.style.transform = 'translateX(' + Ele.ul_d_l + 'px)';
+							Ele.style.transform = 'translateY(' + Ele.ul_d_l + 'px)';
 							setTimeout(inertiaMove, 13);
 						})();
 					})()
 				}
-			//======================实例化对象====================
+				//======================实例化对象====================
 			var a = new Picker(document.getElementById('ul'));
-			var b = new Picker(document.getElementById('ul2'));
 		</script>
 	</body>
 
-	</<html>
+</html>
