@@ -187,7 +187,7 @@
 		
 		//Picker touch事件函数
 		Picker.prototype.touch = function() {
-			this.style.transition = '';
+			this.style.transition = this.style.webkitTransition = '';
 			this.starX = this.starX2 = event.touches[0].clientY;
 			//console.log(this.starX);
 		}
@@ -209,7 +209,7 @@
 				this.left = -this.max_x + this.MAX_INTEGER;
 				return true;
 			}
-			this.style.transform = 'translateY(' + this.left + 'px)';
+			this.style.transform = this.style.webkitTransform = 'translateY(' + this.left + 'px)';
 			//oUl.css('left', left);
 			//移动的缓冲距离
 			this.ul_d = (this.moveX - this.starX);
@@ -223,7 +223,7 @@
 				var Ele = this;
 				var cheak = Ele.ul_d > 0 ? true : false;
 				//更新ul移动的距离
-				Ele.style.transition = 'transform 150ms ease-out';
+				Ele.style.transition = Ele.style.webkitTransition = 'transform 150ms ease-out';
 				Ele.ul_d_l = Ele.left;
 				var i = 1;
 				(function() {
@@ -234,8 +234,8 @@
 						if (Math.abs(l) <= 1) {
 							//alert(Math.abs(ul_d_l/oLi_W));
 							//console.log(index+1);
-							Ele.style.transition = "transform 150ms ease-out";
-							Ele.style.transform = 'translateY(' + -index * Ele.oLi_W + 'px)';
+							Ele.style.transition = Ele.style.webkitTransition = "transform 150ms ease-out";
+							Ele.style.transform = Ele.style.webkitTransform = 'translateY(' + -index * Ele.oLi_W + 'px)';
 							Ele.nowIndex = index + 1;
 							
 							Ele.li[Ele.LiIndex].style.color = '#c7c7c7';
@@ -246,7 +246,7 @@
 							return true;
 						}
 						if (Ele.ul_d_l >= 0) {
-							Ele.style.transform = 'translateY(' + 0 + 'px)';
+							Ele.style.transform = Ele.style.webkitTransform = 'translateY(' + 0 + 'px)';
 							//console.log(index+1);
 							Ele.nowIndex = index + 1;
 							Ele.li[Ele.LiIndex].style.color = '#c7c7c7';
@@ -255,7 +255,7 @@
 							return true;
 						}
 						if (Ele.ul_d_l <= -Ele.max_x + Ele.MAX_INTEGER) {
-							Ele.style.transform = 'translateY(' + (-Ele.max_x + Ele.MAX_INTEGER) + 'px)';
+							Ele.style.transform = Ele.style.webkitTransform = 'translateY(' + (-Ele.max_x + Ele.MAX_INTEGER) + 'px)';
 							//console.log(index+1);
 							Ele.nowIndex = index + 1;
 							Ele.li[Ele.LiIndex].style.color = '#c7c7c7';
@@ -265,7 +265,7 @@
 						}
 						Ele.ul_d_l += l;
 						//console.log(ul_d *= 0.8);
-						Ele.style.transform = 'translateY(' + Ele.ul_d_l + 'px)';
+						Ele.style.transform = Ele.style.webkitTransform = 'translateY(' + Ele.ul_d_l + 'px)';
 						setTimeout(inertiaMove, 13);
 					})();
 				})()
@@ -278,7 +278,7 @@
 					return true;
 				}
 				obj.ul_d_l = -(index - 1) * obj.oLi_W;
-				obj.style.transform = 'translateY(' + obj.ul_d_l + 'px)';
+				obj.style.transform = obj.style.webkitTransform = 'translateY(' + obj.ul_d_l + 'px)';
 				obj.li[obj.LiIndex].style.color = '#c7c7c7';
 				obj.LiIndex = index+1;
 				obj.li[obj.LiIndex].style.color = '#3DB5E3';
@@ -294,7 +294,7 @@
 		
 		
 		//======================实例化对象====================
-		var dataArray = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109];
+		var dataArray = [01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109];
 		
 		var obj = document.getElementById('ul');
 		/**
