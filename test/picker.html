@@ -152,6 +152,9 @@
 			obj.innerHTML = "<li>-</li><li>-</li>" + obj.html + "<li>-</li><li>-</li>";
 			//当前选择数值
 			obj.nowIndex = 1;
+			//初始化li索引
+			obj.LiIndex = 2;
+
 			//开始点击坐标
 			obj.starX = 0;
 			obj.starX2 = 0;
@@ -164,6 +167,10 @@
 			obj.ul_d_l = 0;
 			obj.left = 0;
 			obj.li = obj.getElementsByTagName('li');
+			
+			
+			obj.li[obj.LiIndex].style.color = '#3DB5E3';
+			
 			//li的高度
 			obj.oLi_W = parseInt(window.getComputedStyle(obj.li[0], null).height);
 			obj.max_x = obj.oLi_W * obj.max;
@@ -188,6 +195,7 @@
 		//Picker 移动事件函数
 		Picker.prototype.move = function() {
 			//console.log(444)
+			this.li[this.LiIndex].style.color = '#c7c7c7';
 			//移动时的坐标
 			this.moveX = event.touches[0].clientY;
 			//console.log(event.touches[0].clientY);
@@ -215,19 +223,24 @@
 				var Ele = this;
 				var cheak = Ele.ul_d > 0 ? true : false;
 				//更新ul移动的距离
-				Ele.style.transition = 'all 150ms ease-out';
+				Ele.style.transition = 'transform 150ms ease-out';
 				Ele.ul_d_l = Ele.left;
 				var i = 1;
 				(function() {
 					(function inertiaMove() {
 						var l = Ele.ul_d *= 0.9;
 						var index = Math.round(Math.abs(Ele.ul_d_l / Ele.oLi_W));
+						
 						if (Math.abs(l) <= 1) {
 							//alert(Math.abs(ul_d_l/oLi_W));
 							//console.log(index+1);
-							Ele.style.transition = "all 150ms ease-out";
+							Ele.style.transition = "transform 150ms ease-out";
 							Ele.style.transform = 'translateY(' + -index * Ele.oLi_W + 'px)';
 							Ele.nowIndex = index + 1;
+							
+							Ele.li[Ele.LiIndex].style.color = '#c7c7c7';
+							Ele.LiIndex = index+2;
+							Ele.li[Ele.LiIndex].style.color = '#3DB5E3';
 							//Ele.style.transition = '';
 							//console.log(index+2);
 							return true;
@@ -236,12 +249,18 @@
 							Ele.style.transform = 'translateY(' + 0 + 'px)';
 							//console.log(index+1);
 							Ele.nowIndex = index + 1;
+							Ele.li[Ele.LiIndex].style.color = '#c7c7c7';
+							Ele.LiIndex = index+2;
+							Ele.li[Ele.LiIndex].style.color = '#3DB5E3';
 							return true;
 						}
 						if (Ele.ul_d_l <= -Ele.max_x + Ele.MAX_INTEGER) {
 							Ele.style.transform = 'translateY(' + (-Ele.max_x + Ele.MAX_INTEGER) + 'px)';
 							//console.log(index+1);
 							Ele.nowIndex = index + 1;
+							Ele.li[Ele.LiIndex].style.color = '#c7c7c7';
+							Ele.LiIndex = index+2;
+							Ele.li[Ele.LiIndex].style.color = '#3DB5E3';
 							return true;
 						}
 						Ele.ul_d_l += l;
@@ -284,7 +303,7 @@
 		var Picker = new Picker(obj, dataArray);
 		
 		//指定当前选择为dataArray数组的第10位，值为10
-		Picker.reset(10);
+		//Picker.reset(10);
 		
 		//获取按钮
 		var okBtm = document.getElementById('ok');
