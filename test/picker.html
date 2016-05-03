@@ -281,10 +281,10 @@
 		 * dataArray 选项数据
 		 * 
 		 * */
-		var a = new Picker(obj, dataArray);
+		var Picker = new Picker(obj, dataArray);
 		
 		//指定当前选择为dataArray数组的第10位，值为10
-		a.reset(10);
+		Picker.reset(10);
 		
 		//获取按钮
 		var okBtm = document.getElementById('ok');
@@ -292,7 +292,7 @@
 		//ok按钮点击事件，获取当前选择的值
 		okBtm.addEventListener('click', function() {
 			
-			alert(a.returnIndex());
+			alert(Picker.returnIndex());
 			
 		}, false);
 	</script>
